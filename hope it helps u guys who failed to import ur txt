@@ -1,0 +1,32 @@
+import pandas as pd
+
+# read file by lines
+with open('insertyourWAtexthere.txt', encoding="utf-8") as f: 
+     data=f.readlines()
+
+
+# # sanity stats
+print('num lines: %s' %(len(data)))
+
+# parse text and create list of lists structure
+# remove first whatsapp info message
+dataset = data[1:]
+cleaned_data = []
+for line in dataset:
+    # grab the info and cut it out
+    date = line.split(" ")[0]
+    line2 = line[len(date) + 1:]
+    time = line2.split(" ")[0]
+    line3 = line2[len(time):]
+    name = line3.split(":")[0]
+    line4 = line3[len(name):]
+    message = line4
+    
+    row = (date[1:], time[:-1], name[1:], message[2:-1])
+    # print("'%s', '%s', '%s', '%s'" % row)
+    cleaned_data.append(row)
+
+  
+#Create the DataFrame 
+df = pd.DataFrame(cleaned_data, columns = ['Date', 'Time', 'Author', 'Message']) 
+df
